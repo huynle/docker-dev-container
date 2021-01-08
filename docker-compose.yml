@@ -1,0 +1,33 @@
+#This compose file adds Draw.io https://draw.io to your stack
+version: '3.5'
+services:
+  efi:
+    image: efi:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - USER_ID=${USER_ID}
+        - GROUP_NAME=${GROUP_NAME}
+        - GROUP_ID=${GROUP_ID}
+        - USER_NAME=${USER_NAME}
+        # - http_proxy=$http_proxy
+        # - https_proxy=$https_proxy
+    restart: unless-stopped
+    ports:
+      - "8888:22"
+    volumes:
+      # - ${HOME}:/home/$USER_NAME:ro
+      - ${HOME}/.config/nvim:/home/$USER_NAME/.config/nvim:ro
+      - ${HOME}/.zshrc:/home/$USER_NAME/.zshrc
+      - ${HOME}/.zsh:/home/$USER_NAME/.zsh
+      # - ${HOME}/.cache/vim:/home/$USER_NAME/.cache/vim
+      - ${PROJECT}:/code
+
+    environment:
+      - TEST=1
+      # - HTTP_PROXY=${http_proxy}
+      # - HTTPS_PROXY=${https_proxy}
+      # - GROUP_ID=${GROUP_ID}
+    #   - USER_NAME=${USER_NAME}
+    #   # - GROUP_NAME=${GROUP_NAME}
